@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
+const passport =  require('passport')
 const app  = express();
 const db = require('./config/keys').mongoURI;
 
@@ -18,7 +19,12 @@ app.use(bodyparser.json());
 mongoose
     .connect(db)
     .then(() => console.log('Mongodb connected'))
-    .catch(err => console.log(ero));
+    .catch(err => console.log(err));
+
+//passport middleware
+app.use=(passport.initialize());
+//passport config
+require('./config/passport')(passport);
 
 // Let's write our first route
 app.get('/', (req, res) => res.send('This is the new React project'));
