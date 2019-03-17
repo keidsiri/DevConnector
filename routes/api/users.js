@@ -10,15 +10,27 @@ const passport = require('passport');
 //Load user model
 const User = require('../../models/Users');
 
+//load input validation
+const validateRegisterInput = require('../../validation/register');
+
+
 //@route  POST api/users/register
 //@desc   Register user
 //@access public
 router.post('/register', (req, res) => {
- User.findOne({email: req.body.email})
+    const (errors, isValid) = validateRegisterInput(req.body);
+
+//check for validation 
+if (!isValid){
+return res.status(400).json(errors);
+}
+
+User.findOne({email: req.body.email})
    .then(user => {
      if(user) {
-       return res.status(400).json({email: 'Email already exists'});
-     } else {
+        errors.email = 'Email already exists';
+        return res.status(400).json(errors);
+     }else {
        const avatar = gravatar.url(req.body.email, {
          s: '200',
          r: 'pg',
@@ -95,7 +107,11 @@ router.post('/login', (req, res) => {
 // @access private
 
 router.get('/current', passport.authenticate('jwt',{session: false}), (req, res) => {
- res.json({msg: 'Success'});
+ res.json({
+     id: res.user.id,
+     name: req.user.name,
+     email: req.user.email
+ });
 })
 
 

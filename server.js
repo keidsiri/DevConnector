@@ -14,7 +14,6 @@ const posts = require('./routes/api/posts');
 app.use(bodyparser.urlencoded({ extended: false}));
 app.use(bodyparser.json());
 
-Console.log("Hello.. This is react application");
 //Connect to db
 mongoose
     .connect(db)
