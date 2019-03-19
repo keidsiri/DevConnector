@@ -7,4 +7,4 @@ const isEmpty = value => {
     );
 }
 
-module.exports = isEmpthy;
+module.exports = isEmpty;

@@ -10,7 +10,7 @@ const passport = require('passport');
 //Load user model
 const User = require('../../models/Users');
 
-//load input validation
+//Load input validation
 const validateRegisterInput = require('../../validation/register');
 
 
@@ -18,19 +18,18 @@ const validateRegisterInput = require('../../validation/register');
 //@desc   Register user
 //@access public
 router.post('/register', (req, res) => {
-    const (errors, isValid) = validateRegisterInput(req.body);
-
-//check for validation 
-if (!isValid){
-return res.status(400).json(errors);
+const {errors, isValid} = validateRegisterInput(req.body);
+//Check validation
+if(!isValid) {
+  return res.status(400).json(errors);
 }
 
-User.findOne({email: req.body.email})
+ User.findOne({email: req.body.email})
    .then(user => {
      if(user) {
-        errors.email = 'Email already exists';
-        return res.status(400).json(errors);
-     }else {
+       errors.email = 'Email already exists';
+       return res.status(400).json({errors});
+     } else {
        const avatar = gravatar.url(req.body.email, {
          s: '200',
          r: 'pg',
@@ -108,9 +107,9 @@ router.post('/login', (req, res) => {
 
 router.get('/current', passport.authenticate('jwt',{session: false}), (req, res) => {
  res.json({
-     id: res.user.id,
-     name: req.user.name,
-     email: req.user.email
+   id: req.user.id,
+   name: req.user.name,
+   email: req.user.email
  });
 })
 
