@@ -11,7 +11,7 @@ const User = require('../../models/User');
 
 //Load input validation
 const validateRegisterInput = require('../../validation/register');
-const validateRLoginInput = require('../../validation/login');
+const validateLoginInput = require('../../validation/login');
 
 
 // @route   POST api/users/register
@@ -124,16 +124,16 @@ router.post('/login', (req, res) => {
 // @route   GET api/users/current
 // @desc    returns current user information
 // @access  private
-router.get(
-  '/current',
-  passport.authenticate('jwt', {session: false}),
+router.get('/current', passport.authenticate('jwt', {session: false}),
   (req, res) => {
+    console.log("Logged in successfully");
     res.json({
       id: req.user.id,
       name: req.user.name,
       email: req.user.email
     });
   }
+  
 )
 
 module.exports = router;
