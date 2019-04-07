@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
-//import {Link} from ''
+//import {Link} from 'react-router-dom'
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import store from './store';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-//import './App.css';
+import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <Navbar />
-          <Route path="/" Component={Landing} />
-          <div className="container">
-            <Route exact path="/register" Component={Register} />
-            <Route exact path="/login" Component={Login} />
-          </div>
-          <Footer />
-        </div>
-      </Router>
-    );
-  }
+ render() {
+   return (
+     <Provider store={store}>
+
+     <Router>
+       <div className="App">
+         <Navbar />
+         <Route exact path="/" component={Landing} />
+         <div className="container">
+           <Route exact path="/register" component={Register} />
+           <Route exact path="/login" component={Login} />
+         </div>
+         <Footer />
+       </div>
+     </Router>
+     </Provider>
+  );
+ }
 }
 export default App;
